@@ -1,0 +1,49 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "烧录",
+      "detail": "OpenOCD + ST-Link，把 build/Debug/Snake_Game.elf 写入芯片后复位运行",
+      "type": "shell",
+      "command": "openocd",
+      "args": [
+        "-f",
+        "interface/stlink.cfg",
+        "-c",
+        "transport select swd",
+        "-f",
+        "target/stm32f1x.cfg",
+        "-c",
+        "program {${workspaceFolder}/build/Debug/${workspaceFolderBasename}.elf} verify reset exit"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      }
+    },
+    {
+      "label": "构建并烧录",
+      "detail": "增量编译 → 烧录（Ctrl+Shift+B 默认任务）",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        {
+          "type": "cmake",
+          "command": "build",
+          "targets": ["all"],
+          "problemMatcher": ["$gcc"]
+        },
+        "烧录"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    }
+  ]
+}

@@ -64,7 +64,10 @@
 #define configTICK_RATE_HZ                       ((TickType_t)1000)
 #define configMAX_PRIORITIES                     ( 56 )
 #define configMINIMAL_STACK_SIZE                 ((uint16_t)128)
-#define configTOTAL_HEAP_SIZE                    ((size_t)3072)
+/* 8192: 5 tasks (512+1024+512+512+512) + timer service task + 2 queues + 1 mutex
+ * + idle task need about 5.2 KB. Set the same value in FREERTOS -> Config
+ * parameters (TOTAL_HEAP_SIZE) or regenerating will revert it. */
+#define configTOTAL_HEAP_SIZE                    ((size_t)8192)
 #define configMAX_TASK_NAME_LEN                  ( 16 )
 #define configUSE_TRACE_FACILITY                 1
 #define configUSE_16_BIT_TICKS                   0

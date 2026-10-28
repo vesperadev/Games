@@ -61,6 +61,42 @@ const osThreadAttr_t myOLEDTasj_attributes = {
   .stack_size = 256 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
+/* Definitions for myKEYTask */
+osThreadId_t myKEYTaskHandle;
+const osThreadAttr_t myKEYTask_attributes = {
+  .name = "myKEYTask",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityLow,
+};
+/* Definitions for myTempTask */
+osThreadId_t myTempTaskHandle;
+const osThreadAttr_t myTempTask_attributes = {
+  .name = "myTempTask",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityLow,
+};
+/* Definitions for myEncoderTask */
+osThreadId_t myEncoderTaskHandle;
+const osThreadAttr_t myEncoderTask_attributes = {
+  .name = "myEncoderTask",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityLow,
+};
+/* Definitions for KEY1Queue */
+osMessageQueueId_t KEY1QueueHandle;
+const osMessageQueueAttr_t KEY1Queue_attributes = {
+  .name = "KEY1Queue"
+};
+/* Definitions for KEY2Queue */
+osMessageQueueId_t KEY2QueueHandle;
+const osMessageQueueAttr_t KEY2Queue_attributes = {
+  .name = "KEY2Queue"
+};
+/* Definitions for I2C1Mutex */
+osMutexId_t I2C1MutexHandle;
+const osMutexAttr_t I2C1Mutex_attributes = {
+  .name = "I2C1Mutex"
+};
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -69,6 +105,9 @@ const osThreadAttr_t myOLEDTasj_attributes = {
 
 void StartDefaultTask(void *argument);
 void StartOLEDTask(void *argument);
+void StartKEYTask(void *argument);
+void StartTempTask(void *argument);
+void StartEncoderTask(void *argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -81,6 +120,9 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN Init */
 
   /* USER CODE END Init */
+  /* Create the mutex(es) */
+  /* creation of I2C1Mutex */
+  I2C1MutexHandle = osMutexNew(&I2C1Mutex_attributes);
 
   /* USER CODE BEGIN RTOS_MUTEX */
   /* add mutexes, ... */
@@ -94,6 +136,13 @@ void MX_FREERTOS_Init(void) {
   /* start timers, add new ones, ... */
   /* USER CODE END RTOS_TIMERS */
 
+  /* Create the queue(s) */
+  /* creation of KEY1Queue */
+  KEY1QueueHandle = osMessageQueueNew (8, sizeof(uint16_t), &KEY1Queue_attributes);
+
+  /* creation of KEY2Queue */
+  KEY2QueueHandle = osMessageQueueNew (8, sizeof(uint16_t), &KEY2Queue_attributes);
+
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
   /* USER CODE END RTOS_QUEUES */
@@ -104,6 +153,15 @@ void MX_FREERTOS_Init(void) {
 
   /* creation of myOLEDTasj */
   myOLEDTasjHandle = osThreadNew(StartOLEDTask, NULL, &myOLEDTasj_attributes);
+
+  /* creation of myKEYTask */
+  myKEYTaskHandle = osThreadNew(StartKEYTask, NULL, &myKEYTask_attributes);
+
+  /* creation of myTempTask */
+  myTempTaskHandle = osThreadNew(StartTempTask, NULL, &myTempTask_attributes);
+
+  /* creation of myEncoderTask */
+  myEncoderTaskHandle = osThreadNew(StartEncoderTask, NULL, &myEncoderTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -149,6 +207,60 @@ __weak void StartOLEDTask(void *argument)
     osDelay(1);
   }
   /* USER CODE END StartOLEDTask */
+}
+
+/* USER CODE BEGIN Header_StartKEYTask */
+/**
+* @brief Function implementing the myKEYTask thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_StartKEYTask */
+__weak void StartKEYTask(void *argument)
+{
+  /* USER CODE BEGIN StartKEYTask */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END StartKEYTask */
+}
+
+/* USER CODE BEGIN Header_StartTempTask */
+/**
+* @brief Function implementing the myTempTask thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_StartTempTask */
+__weak void StartTempTask(void *argument)
+{
+  /* USER CODE BEGIN StartTempTask */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END StartTempTask */
+}
+
+/* USER CODE BEGIN Header_StartEncoderTask */
+/**
+* @brief Function implementing the myEncoderTask thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_StartEncoderTask */
+__weak void StartEncoderTask(void *argument)
+{
+  /* USER CODE BEGIN StartEncoderTask */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END StartEncoderTask */
 }
 
 /* Private application code --------------------------------------------------*/

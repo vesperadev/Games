@@ -578,7 +578,7 @@ void OLED_PrintASCIIChar(uint8_t x, uint8_t y, char ch, const ASCIIFont *font, O
  * @param font 字体
  * @param color 颜色
  */
-void OLED_PrintASCIIString(uint8_t x, uint8_t y, char *str, const ASCIIFont *font, OLED_ColorMode color) {
+void OLED_PrintASCIIString(uint8_t x, uint8_t y, const char *str, const ASCIIFont *font, OLED_ColorMode color) {
   uint8_t x0 = x;
   while (*str) {
     OLED_PrintASCIIChar(x0, y, *str, font, color);
@@ -590,7 +590,7 @@ void OLED_PrintASCIIString(uint8_t x, uint8_t y, char *str, const ASCIIFont *fon
 /**
  * @brief 获取UTF-8编码的字符长度
  */
-uint8_t _OLED_GetUTF8Len(char *string) {
+uint8_t _OLED_GetUTF8Len(const char *string) {
   if ((string[0] & 0x80) == 0x00) {
     return 1;
   } else if ((string[0] & 0xE0) == 0xC0) {
@@ -627,7 +627,7 @@ uint8_t _OLED_GetUTF8Len(char *string) {
  * 1. 编译器字符集设置为UTF-8
  * 2. 使用波特律动LED取模工具生成字模(https://led.baud-dance.com)
  */
-void OLED_PrintString(uint8_t x, uint8_t y, char *str, const Font *font, OLED_ColorMode color) {
+void OLED_PrintString(uint8_t x, uint8_t y, const char *str, const Font *font, OLED_ColorMode color) {
   uint16_t i = 0;                                       // 字符串索引
   uint8_t oneLen = (((font->h + 7) / 8) * font->w) + 4; // 一个字模占多少字节
   uint8_t found;                                        // 是否找到字模

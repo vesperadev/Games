@@ -33,7 +33,9 @@ enable_language(C ASM)
 
 # Create an executable object type
 add_executable(${CMAKE_PROJECT_NAME}
-    Core/Src/Task/OLEDTask.c)
+    Core/Src/Task/I2C/OLEDTask.c
+    Core/Src/Task/KEYTask.c
+    Core/Inc/KEYTask.h)
 
 # Add STM32CubeMX generated sources
 add_subdirectory(cmake/stm32cubemx)
@@ -48,7 +50,11 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user sources here
     Core/Src/oled.c
     Core/Src/font.c
-    Core/Src/Task/OLEDTask.c
+    Core/Src/Task/I2C.c
+    Core/Src/Task/EncoderTask.c
+    Core/Src/Task/I2C/TempTask.c
+    Core/Src/Game/Snake.c
+    Core/Src/Game/Score.c
 )
 
 # Add include paths
