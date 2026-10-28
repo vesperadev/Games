@@ -1,0 +1,92 @@
+# ============================================================
+# STM32F103 / CubeMX + CMake + FreeRTOS 工程 .gitignore
+# 保留: Snake_Game.ioc / CMakeLists.txt / CMakePresets.json / cmake /
+#       Core / Drivers / Middlewares / 链接脚本 / .vscode / .clangd
+# ============================================================
+
+# ---------- 构建输出 ----------
+build/
+Debug/
+Release/
+cmake-build-*/
+out/
+*.elf
+*.hex
+*.bin
+*.map
+*.srec
+*.axf
+
+# ---------- 编译中间文件 ----------
+*.o
+*.obj
+*.d
+*.a
+*.lib
+*.su
+*.dwo
+*.gcno
+*.gcda
+*.lst
+
+# ---------- CMake / Ninja 生成物 ----------
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+install_manifest.txt
+CTestTestfile.cmake
+compile_commands.json
+CMakeUserPresets.json
+build.ninja
+rules.ninja
+*.ninja
+.ninja_deps
+.ninja_log
+
+# ---------- CMSIS 精简（本工程只用到 Core 头 + STM32F103xB 器件头）----------
+# 以下组件本工程未编译，占体积最大（约 47 MB）
+# Lib = ARM/IAR/GCC 预编译数学库，DSP/NN = CMSIS 算法库
+Drivers/CMSIS/Lib/
+Drivers/CMSIS/DSP/
+Drivers/CMSIS/NN/
+Drivers/CMSIS/RTOS/
+Drivers/CMSIS/RTOS2/
+Drivers/CMSIS/Core_A/
+Drivers/CMSIS/Core/Template/
+Drivers/CMSIS/docs/
+# 启动文件与 system_stm32f1xx.c 已由工程根目录 / Core/Src 提供
+Drivers/CMSIS/Device/ST/STM32F1xx/Source/
+# 其它型号头文件（F100/F101/F102/F105/F107 等），换芯片时放开对应行
+Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f100*.h
+Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f101*.h
+Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f102*.h
+Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f105*.h
+Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f107*.h
+Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103x6.h
+Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xe.h
+Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xg.h
+
+# ---------- STM32CubeMX / STM32 VS Code 扩展 ----------
+.mxproject
+.settings/
+mx.scratch
+*.ioc.bak
+*.launch
+
+# ---------- 编辑器 / 语言服务缓存 ----------
+.cache/
+compile_commands.json.bak
+.vscode/ipch/
+.vscode/*.log
+*.code-workspace
+*.swp
+*~
+
+# ---------- 调试 / 烧录产物 ----------
+openocd.log
+*.log
+
+# ---------- 操作系统 ----------
+Thumbs.db
+Desktop.ini
+.DS_Store
