@@ -1,0 +1,33 @@
+# 统一换行符：仓库内一律存 LF，避免 Windows/Linux 之间来回改写
+* text=auto eol=lf
+
+# 源码 / 工程文件明确使用 LF
+*.c    text eol=lf
+*.h    text eol=lf
+*.s    text eol=lf
+*.S    text eol=lf
+*.ld   text eol=lf
+*.ioc  text eol=lf
+*.txt  text eol=lf
+*.md   text eol=lf
+*.json text eol=lf
+*.yml  text eol=lf
+*.yaml text eol=lf
+*.cmake text eol=lf
+CMakeLists.txt text eol=lf
+*.ninja text eol=lf
+
+# 二进制文件不做换行转换
+*.bin  binary
+*.hex  binary
+*.elf  binary
+*.axf  binary
+*.o    binary
+*.a    binary
+*.lib  binary
+*.png  binary
+*.jpg  binary
+*.gif  binary
+*.ico  binary
+*.pdf  binary
+*.zip  binary
