@@ -133,7 +133,7 @@ Core/
     │   ├─ Snake.c        grid, direction, food, collision
     │   └─ Score.c        top-10 table + flash persistence
     ├─ Task/
-    │   ├─ I2C.c          mutex handle, I2CBus_Lock / I2CBus_Unlock
+    │   ├─ I2C.c          mutex handle, I2C1Bus_Lock / I2C1Bus_Unlock
     │   ├─ EncoderTask.c  TIM1 encoder polling
     │   ├─ KEYTask.c      key state machine
     │   └─ I2C/

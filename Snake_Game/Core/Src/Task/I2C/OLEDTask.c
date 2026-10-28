@@ -50,9 +50,9 @@ static const char *const kMenuText[MENU_COUNT] = {
 /// I2C1 is shared with the sensor task, so the transfer must hold the bus mutex.
 static void OLED_Push(void)
 {
-    I2CBus_Lock();
+    I2C1Bus_Lock();
     OLED_ShowFrame();
-    I2CBus_Unlock();
+    I2C1Bus_Unlock();
 }
 
 /// Write a decimal number into buf (at least 6 bytes) and return its length
@@ -364,9 +364,9 @@ void StartOLEDTask(void *argument)
 
     SCORE_Load();
 
-    I2CBus_Lock();
+    I2C1Bus_Lock();
     OLED_Init();   ///< clears the screen internally
-    I2CBus_Unlock();
+    I2C1Bus_Unlock();
 
     MENU_Draw();   ///< first frame
 

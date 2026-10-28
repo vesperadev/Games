@@ -5,13 +5,13 @@
 
 /// TIM1 runs in encoder mode TI12, so one mechanical detent gives 4 counts.
 #define ENCODER_COUNTS_PER_STEP  4
-#define ENCODER_SCAN_MS          10
+#define ENCODER_SCAN_MS          100
 #define ENCODER_MAX_STEPS        8    ///< clamp a burst so the consumer never sees huge jumps
 
 /// 1 = flip the rotation sense. Set to 0 if clockwise starts to turn left.
 #define ENCODER_INVERT           1
 
-static int32_t s_counts;   ///< raw counts not yet converted into steps
+static volatile int32_t s_counts;   ///< raw counts not yet converted into steps
 
 void StartEncoderTask(void *argument)
 {
@@ -32,7 +32,9 @@ void StartEncoderTask(void *argument)
         last = now;
 
         if (delta != 0) {
+            __disable_irq();
             s_counts += delta;
+            __enable_irq();
         }
 
         osDelay(ENCODER_SCAN_MS);
@@ -41,10 +43,15 @@ void StartEncoderTask(void *argument)
 
 int8_t ENCODER_TakeSteps(void)
 {
-    int32_t steps = s_counts / ENCODER_COUNTS_PER_STEP;
+    int32_t counts;
+    int32_t steps;
 
-    /// keep the remainder so slow turns are not lost
-    s_counts -= steps * ENCODER_COUNTS_PER_STEP;
+    __disable_irq();
+    counts = s_counts;
+    s_counts = 0;
+    __enable_irq();
+
+    steps = counts / ENCODER_COUNTS_PER_STEP;
 
 #if ENCODER_INVERT
     steps = -steps;   ///< swap clockwise / counter-clockwise

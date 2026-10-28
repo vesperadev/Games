@@ -55,17 +55,19 @@ static uint8_t blob_save(void)
 
     if (HAL_FLASHEx_Erase(&erase, &page_error) != HAL_OK) {
         ok = 0;
+        goto cleanup;
     }
 
     for (i = 0; ok && i < sizeof(ScoreBlob) / 2; i++) {
         if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_HALFWORD,
                               SCORE_FLASH_ADDR + i * 2, src[i]) != HAL_OK) {
             ok = 0;
+            goto cleanup;
         }
     }
 
+cleanup:
     HAL_FLASH_Lock();
-
     return ok;
 }
 

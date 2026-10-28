@@ -129,7 +129,7 @@ Core/
     │   ├─ Snake.c        网格、方向、食物、碰撞
     │   └─ Score.c        前十名 + Flash 持久化
     ├─ Task/
-    │   ├─ I2C.c          互斥量句柄、I2CBus_Lock / I2CBus_Unlock
+    │   ├─ I2C.c          互斥量句柄、I2C1Bus_Lock / I2C1Bus_Unlock
     │   ├─ EncoderTask.c  TIM1 编码器轮询
     │   ├─ KEYTask.c      按键状态机
     │   └─ I2C/

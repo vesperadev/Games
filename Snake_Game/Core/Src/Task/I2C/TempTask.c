@@ -14,8 +14,8 @@
 #define AHT2X_SCALE         1048576UL    ///< 2^20, the raw value is 20 bit
 #define TEMP_PERIOD_MS      2000         ///< sampling period
 
-static TempData s_data;        ///< latest sample, shared with the UI
-static uint8_t  s_seq;         ///< incremented on every new sample
+static volatile TempData s_data;   ///< latest sample, shared with the UI
+static volatile uint8_t  s_seq;    ///< incremented on every new sample
 static uint8_t  s_readSeq;     ///< sequence already handed out to the UI
 
 /// Write bytes to the sensor
@@ -23,9 +23,9 @@ static uint8_t AHT2X_Write(const uint8_t *buf, uint16_t len)
 {
     HAL_StatusTypeDef st;
 
-    I2CBus_Lock();
+    I2C1Bus_Lock();
     st = HAL_I2C_Master_Transmit(&hi2c1, AHT2X_ADDR, (uint8_t *)buf, len, 50);
-    I2CBus_Unlock();
+    I2C1Bus_Unlock();
 
     return (st == HAL_OK) ? 1 : 0;
 }
@@ -35,9 +35,9 @@ static uint8_t AHT2X_Read(uint8_t *buf, uint16_t len)
 {
     HAL_StatusTypeDef st;
 
-    I2CBus_Lock();
+    I2C1Bus_Lock();
     st = HAL_I2C_Master_Receive(&hi2c1, AHT2X_ADDR, buf, len, 50);
-    I2CBus_Unlock();
+    I2C1Bus_Unlock();
 
     return (st == HAL_OK) ? 1 : 0;
 }
@@ -121,8 +121,10 @@ void StartTempTask(void *argument)
             sample.hum_x10 = 0;
         }
 
+        __disable_irq();
         s_data = sample;
         s_seq++;
+        __enable_irq();
 
         osDelay(TEMP_PERIOD_MS);
     }
@@ -130,16 +132,24 @@ void StartTempTask(void *argument)
 
 uint8_t TEMP_GetLatest(TempData *out)
 {
+    TempData local;
+    uint8_t  new_seq;
+
     if (out == NULL) {
         return 0;
     }
 
-    *out = s_data;
+    __disable_irq();
+    local   = s_data;
+    new_seq = s_seq;
+    __enable_irq();
 
-    if (s_seq == s_readSeq) {
+    *out = local;
+
+    if (new_seq == s_readSeq) {
         return 0;  ///< nothing new
     }
 
-    s_readSeq = s_seq;
+    s_readSeq = new_seq;
     return 1;
 }
