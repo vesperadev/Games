@@ -37,6 +37,12 @@ Built with STM32CubeMX, CMake and FreeRTOS (CMSIS-RTOS v2).
 
 **KEYSKING STM32 Tutorial** — STM32F103C8T6 on LQFP48.
 
+![Snake game boot menu on the board's OLED](images/board-oled-snake-menu.jpg)
+*The snake-game boot menu running on the on-board 128×64 I2C OLED.*
+
+![KEYSKING STM32 Tutorial board overview](images/board-overview.jpg)
+*Board overview — this game only touches the OLED, the EC11 encoder and KEY1/KEY2.*
+
 ### MCU
 
 | Item | Value |

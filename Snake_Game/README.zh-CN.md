@@ -37,6 +37,12 @@
 
 **KEYSKING STM32 Tutorial** —— STM32F103C8T6，LQFP48 封装。
 
+![板载 OLED 显示贪吃蛇启动菜单](images/board-oled-snake-menu.jpg)
+*贪吃蛇启动菜单运行在板载 128×64 I2C OLED 上。*
+
+![KEYSKING STM32 Tutorial 开发板全貌](images/board-overview.jpg)
+*开发板全貌 —— 本项目只用到 OLED、EC11 编码器和 KEY1/KEY2。*
+
 ### MCU
 
 | 项目 | 值 |
